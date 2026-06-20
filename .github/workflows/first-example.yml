@@ -12,11 +12,12 @@ jobs:
           - name: Checkout repository
             uses: actions/checkout@v4
 
-          - name: List file
+          - name: List and read file
             run: |
               pwd
               ls -la
               find . -name "README*"
+              cat README.md
             
-          - name: Read file
-            run: cat README.md
+          - name: Generate ASCII Artwork
+            run: cowsay -f dragon "Run for cover, I am a DRAGON...RAWR" >> dragon.txt
