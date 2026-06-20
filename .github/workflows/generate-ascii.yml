@@ -3,16 +3,46 @@ name: Generate ASCII Artwork
 on: push
 
 jobs:
-  ascii_job:
+  first_job_1:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: List Repo File
-        run: ls -alrt
-
       - name: Execute Shell Script
         run: |
           chmod +x ascii-script.sh
           ./ascii-script.sh
+    
+      - name: List Repo File
+        run: ls -alrt
+     
+      - name: Upload Dragon file
+        uses: actions/upload-artifact@v7
+        with:
+          name: dragon-name
+          path: dragon.txt
+
+  second_job_2:
+    needs: first_job_1
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Download Dragon File'
+        uses: actions/download-artifact@v8
+        with:
+          name: dragon-name
+
+      - name: Test File Exists
+        run: grep -i "dragon" dragon.txt
+  
+  third_job_3:
+    needs: second_job_2
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Download Dragon File'
+        uses: actions/download-artifact@v8
+        with:
+          name: dragon-name
+      
+      - name: Read Dragon File
+        run: cat dragon.txt 
